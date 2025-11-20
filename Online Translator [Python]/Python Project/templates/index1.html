@@ -1,0 +1,167 @@
+<!-- index1.html -->
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Caveat:wght@400;700&family=Lobster&family=Monoton&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display+SC:ital,wght@0,400;0,700;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&family=Work+Sans:ital,wght@0,400;0,700;1,700&display=swap');
+
+  .h1 {
+      font-family: "Comic Sans MS";
+  }
+  
+  .bgm {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      justify-content: center;
+  
+  }
+  
+  .bgm::before {
+      content: "";
+      background-image: url('https://as2.ftcdn.net/v2/jpg/01/88/72/13/1000_F_188721321_5NafW68zOX7ujRzo0lfEcwsbeF8anPQi.jpg');
+      height: 100vh;
+      background-size: cover;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.60;
+  }
+  
+  .card {
+      background-color: #FFFFFF;
+      text-align: center;
+      margin: 25px;
+      border-radius: 18px;
+      position: relative;
+       border-style: groove;
+      border-color:#ffffff ;
+  
+  }
+  
+  .forum {
+      width: 75%;
+      height: 50px;
+  
+  }
+  
+  .p {
+      font-family: "Comic Sans MS";
+  }
+  
+  .select {
+      font-family: "Comic Sans MS";
+      padding: 15px;
+      margin: 19px;
+  }
+  
+  .btn {
+      border: 0px;
+      height: 35px;
+      width: 80px;
+      margin: 10px;
+      background-color: #f5be76;
+      font-family: "Comic Sans MS";
+      border-radius: 5px;
+  }
+  
+  .op {
+      background-color: #FFFFFF;
+      margin: 25px;
+      font-family: "Comic Sans MS";
+      border-radius: 18px;
+      height: 180px;
+      position: relative;
+      justify-content: center;
+      border-style: groove;
+      border-color:#ffffff ;
+  
+  }
+</style>
+<title>Online Translator</title>
+<body>
+    <div class="bgm">
+        <div class="card d-flex flex-column justify-content-center" id="intro">
+            <h1 class="h1">Online Translator</h1>
+            <form id="form">
+                <input type="search" id="query" name="q" placeholder="Enter text" class="forum"><br>
+                <label for="language" class="p">Choose your desired Language:</label><br>
+                <select name="language" id="language" class="select">
+                    <option value="mr">Marathi</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="ta">Tamil</option>
+                    <option value="pa">Punjabi</option>
+                    <option value="or">Odia</option>
+                    <option value="de">German</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="Selectone" selected>Select one</option>
+                    <option value="te">Telugu</option>
+                </select>
+            </form>
+            <button class="btn" onclick="translateText()">Translate</button>
+            <br>
+            <div id="output">
+                <h3 class="op">Translation:
+                <p id="translated_text"></p>
+                </h3>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        async function translateText() {
+            const text = document.getElementById('query').value;
+            const language = document.getElementById('language').value;
+            const response = await fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'text': text,
+                    'language': language
+                })
+            });
+            const result = await response.json();
+            const output = document.getElementById('translated_text');
+            if (result.error) {
+                output.textContent = Error.$result.error; 
+                        } 
+            else {
+                output.textContent = result.translated_text;
+            }
+        }
+    </script>
+</body>
+</html>
+<script>
+  async function translateText() {
+    const text = document.getElementById('query').value;
+    const language = document.getElementById('language').value;
+    try {
+      const response = await fetch('/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text, language }),
+      });
+      const result = await response.json();
+      const output = document.getElementById('translated_text');
+      if (result.error) {
+        output.textContent = result.error;
+      } else {
+        output.textContent = result.translation;
+      }
+    } catch (error) {
+      output.textContent = 'Error: ' + error;
+    }
+  }
+</script>
