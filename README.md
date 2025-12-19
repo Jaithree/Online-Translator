@@ -4,6 +4,7 @@ Online-Translator
 This repository hosts two distinct projects:
 -> An **Online Translator** built with **Python (Flask)**, a minimal backend, and **HTML/CSS/JavaScript** for the frontend.
 ->A command-line **Bug Tracking System** built with **Java**.
+
 2. Online Translator Web Application
 A simple web application that allows users to translate text into various target languages using the `googletrans` library.
 **Technologies Used
